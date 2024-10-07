@@ -1,0 +1,37 @@
+arn:aws:sqs:ap-south-1:073134310030:appqueue
+
+SNS --> SQS
+
+Enable raw message delivery
+
+SMTP , POP3
+
+Application Integration?
+
+HDFC --> Croma --> ICICI --> Notification (SMS,EMAIL)
+
+Insurance 49paise
+
+AWS --Application to Application Communication
+
+1. Sync -- Both are should available
+
+2. Async ---> MQ
+
+2 ways
+
+1 - 1
+1 - M
+
+Role - Service to service comm
+
+
+DEAD LETTER QUEUE -- Admin 
+
+SQS
+SNS
+
+SES --> Customer realted
+
+MQ (Meassage Queue)--> Webshpere
+Rabbit -->

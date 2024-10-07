@@ -1,0 +1,54 @@
+Application Integrated eng:
+
+MQ - IBM Websphere MQ/IIB
+
+AWS --> SNS, SQS
+
+SQS-Simple Queue Service
+
+Simple Notification Service
+
+APP --> APP - COMMUNICATION
+
+1. SYNC
+2. ASYNC  ---> one to one , one to many
+
+------------
+Practical:
+---------
+
+1. SQS -- > queue
+a. Simple queue creation
+b. Send and recieve message
+c. configure deadletter queue
+
+2. SNS  -- > Topic
+a. Topic creation
+b. Subscription creation (mail,sms) sms assignment
+Check the published meaasges received
+
+Adding SQS as a subscriber
+
+c. SNS and SQS integration ---> IAM Roles need for it
+d. Create one  queue with role - SNS role for sqs
+e. create one queue and assign the role ARN
+f. create one new topic and add the sqs as a subscriber
+g. Approve from queue actions
+h. publish and check the queue recived message
+
+Assigment - SMS
+
+Enable row message 
+
+3. Mini project (Cloud watch)
+CPU utillization
+a. create one EC2 instance and copy the instance id 
+b. go to Cloud watch paste the instance id - Go to browse and search cpu 
+c. select the cputillization graphed metrics 
+d. Config alarm and check the alert came to subscribers
+
+4.  SES
+
+5. Delete all
+
+
