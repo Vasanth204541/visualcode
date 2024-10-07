@@ -1,0 +1,83 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: An example CloudFormation template for an Application Load Balancer with a target group in a VPC.
+
+Resources:
+  # Define the VPC
+  MyVPC:
+    Type: AWS::EC2::VPC
+    Properties: 
+      CidrBlock: "10.0.0.0/16"
+      Tags:
+        - Key: Name
+          Value: my-vpc
+
+  # Define a public subnet
+  MySubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MyVPC
+      CidrBlock: "10.0.1.0/24"
+      AvailabilityZone: !Select [ 0, !GetAZs '' ]
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: my-subnet
+
+  # Define the security group for the ALB
+  MyALBSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Enable HTTP access
+      VpcId: !Ref MyVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: "0.0.0.0/0"
+  
+  # Define the Application Load Balancer
+  MyALB:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: my-alb
+      Subnets:
+        - !Ref MySubnet
+      SecurityGroups:
+        - !Ref MyALBSecurityGroup
+      Scheme: internet-facing
+      Type: application
+      IpAddressType: ipv4
+  
+  # Define the target group
+  MyTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name: my-target-group
+      Port: 80
+      Protocol: HTTP
+      VpcId: !Ref MyVPC
+      HealthCheckProtocol: HTTP
+      HealthCheckPort: 80
+      HealthCheckPath: /health
+      Matcher:
+        HttpCode: "200"
+  
+  # Define a listener for the ALB
+  MyListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+        - Type: fixed-response
+          FixedResponseConfig:
+            StatusCode: "200"
+            ContentType: text/plain
+            MessageBody: "OK"
+      LoadBalancerArn: !Ref MyALB
+      Port: 80
+      Protocol: HTTP
+      SslPolicy: ELBSecurityPolicy-2016-08
+
+Outputs:
+  LoadBalancerDNSName:
+    Description: "The DNS name of the load balancer"
+    Value: !GetAtt MyALB.DNSName
